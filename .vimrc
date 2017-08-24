@@ -144,7 +144,9 @@ colorscheme solarized
 
 set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 9
 
-set ttymouse=sgr
+if !has('nvim')
+    set ttymouse=sgr
+endif
 set mouse=a
 
 " Easier navigation between splits
@@ -225,3 +227,14 @@ let g:airline#extensions#tabline#enabled = 1 "Enable tabline
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let delimitMate_expand_cr = 2
 let delimitMate_expand_space = 1
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" NeoVim specific
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+if has('nvim')
+    :tnoremap <Esc> <C-\><C-n>
+    :tnoremap <C-j> <C-\><C-n><c-w>j
+    :tnoremap <C-k> <C-\><C-n><c-w>k
+    :tnoremap <C-h> <C-\><C-n><c-w>h
+    :tnoremap <C-l> <C-\><C-n><c-w>l
+endif
