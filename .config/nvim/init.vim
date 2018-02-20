@@ -19,16 +19,6 @@ Plug 'edkolev/tmuxline.vim'
 " Fuzzy search
 Plug 'ctrlpvim/ctrlp.vim'
 
-" Client for Language Server Protocol
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
-Plug 'roxma/nvim-completion-manager'
-Plug 'roxma/LanguageServer-php-neovim',  {
-    \ 'do': 'composer install && composer run-script parse-stubs'
-    \ }
-
 " Commenting
 Plug 'tpope/vim-commentary'
 
@@ -58,6 +48,15 @@ Plug 'captbaritone/better-indent-support-for-php-with-html'
 
 " Enhance file browser
 Plug 'tpope/vim-vinegar'
+
+" Rust language support
+Plug 'rust-lang/rust.vim'
+
+" Auto completion, etc.
+Plug 'Valloric/YouCompleteMe'
+
+" Syntax checking
+Plug 'vim-syntastic/syntastic'
 call plug#end()
 
 
@@ -203,13 +202,13 @@ let g:ctrlp_map = '<Leader>o'  " Shortcut to open ctrl-p
 nmap <Leader>r :CtrlPMRU<CR>
 let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
 let g:ctrlp_clear_cache_on_exit = 0
-let g:ctrlp_user_command = 'ag %s -l --nocolor -g ••'
-" let g:ctrlp_user_command = {
-"   \ 'types': {
-"     \ 1: ['.git', 'ag -l --nocolor -g "" %s/{src/dir1,src/dir2}/'],
-"     \ },
-"   \ 'fallback': 'find %s -type f'
-"   \ }
+"let g:ctrlp_user_command = 'ag %s -l --nocolor -g ••'
+"let g:ctrlp_user_command = {
+"  \ 'types': {
+"    \ 1: ['.git', 'ag -l --nocolor -g "" %s/{src/dir1,dir2}/'],
+"    \ },
+"  \ 'fallback': 'find %s -type f'
+"  \ }
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -220,33 +219,31 @@ let g:airline#extensions#tabline#enabled = 1 "Enable tabline
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" nvim-completion-manager
+" YouCompleteMe
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
+nnoremap <Leader>g :YcmCompleter GoTo<CR>
+let g:ycm_key_detailed_diagnostics = '<leader>d'
+" Close preview window after user leaves insert mode
+" let g:ycm_autoclose_preview_window_after_insertion = 1
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" LanguageClient-neovim
+" Syntastic
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set hidden
-let g:LanguageClient_settingsPath = '/home/mjung/.config/nvim/settings.json'
-let g:LanguageClient_serverCommands = {
-\ 'cpp': ['cquery', '--language-server', '--log-file=/tmp/cq.log', '--log-stdin-stdout-to-stderr']
-\ }
-let g:LanguageClient_loadSettings = 1
-let g:LanguageClient_loggingLevel = 'DEBUG'
-nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
-nnoremap <silent> <Leader>g :call LanguageClient_textDocument_definition()<CR>
-nnoremap <silent> <Leader>u :call LanguageClient_textDocument_references()<CR>
-nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_rust_checkers = ['cargo']
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Filetype-specific settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-autocmd FileType php LanguageClientStart
 autocmd FileType php,html setlocal shiftwidth=2
 
 let g:html_indent_inctags="p"
