@@ -1,4 +1,6 @@
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin('~/.local/share/nvim/plugged')
 
 " solarized colorscheme
@@ -17,8 +19,12 @@ Plug 'edkolev/tmuxline.vim'
 " Fuzzy search
 Plug 'ctrlpvim/ctrlp.vim'
 
-" Auto completion, etc.
-Plug 'Valloric/YouCompleteMe'
+" Client for Language Server Protocol
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
+Plug 'roxma/nvim-completion-manager'
 
 " Commenting
 Plug 'tpope/vim-commentary'
@@ -46,7 +52,9 @@ Plug 'tpope/vim-vinegar'
 call plug#end()
 
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " General settings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set fenc=utf-8
 
 set tabstop=4       " Number of spaces that a <Tab> in the file counts for.
@@ -87,9 +95,14 @@ set laststatus=2    " Display status line even if only one window is currently
 set listchars=tab:»\  " highlight tabs
 set list            " Enable highlighting of the listchars
 
-let g:load_doxygen_syntax = 1 "Doxygen syntax highlighting by default
-
 syntax on
+
+" Better recognition of gitcommit files when using the git worktree feature
+autocmd FileType gitcommit setlocal textwidth=72
+autocmd FileType gitcommit setlocal colorcolumn=73
+autocmd BufNewFile,BufRead *.git/worktrees/**/COMMIT_EDITMSG setf gitcommit
+
+let g:load_doxygen_syntax = 1 "Doxygen syntax highlighting by default
 
 set colorcolumn=81
 set nowrap
@@ -101,7 +114,7 @@ colorscheme solarized
 
 set mouse=a
 
-"Shortcuts for navigation among splits
+" Easier navigation among splits
 nnoremap <c-j> <c-w>j
 nnoremap <c-k> <c-w>k
 nnoremap <c-h> <c-w>h
@@ -109,8 +122,7 @@ nnoremap <c-l> <c-w>l
 
 let mapleader="\<Space>"
 
-" Remap some combinations that are not really accessible on the NEO keyboard
-" layout
+" The <C-]> combination is not really accesible with the NEO keyboard layout
 nmap üü <C-]>
 nmap güü g<C-]>
 nmap <C-W>üü <C-W><C-]>
@@ -125,73 +137,80 @@ tnoremap <C-v><Esc> <Esc>
 set tags=./tags;$HOME
 
 
-" Special handling of git commit messages
-autocmd FileType gitcommit setlocal textwidth=72
-autocmd FileType gitcommit setlocal colorcolumn=73
-autocmd BufNewFile,BufRead *.git/worktrees/**/COMMIT_EDITMSG setf gitcommit
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" vim-commentary
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Use // instead of /* */ comments for cpp files
+autocmd FileType cpp setlocal commentstring=//\ %s
 
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" UtliSnips
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" let g:UltiSnipsExpandTrigger = "<C-J>"
+" let g:UltiSnipsJumpForwardTrigger = "<C-J>"
+" let g:UltiSnipsJumpBackwardTrigger = "<C-K>"
+"
+let g:UltiSnipsSnippetsDir = "~/.local/share/nvim/UltiSnips"
+let g:UltiSnipsExpandTrigger = "<Plug>(ultisnips_expand)"
+let g:UltiSnipsJumpForwardTrigger = "<c-j>"
+let g:UltiSnipsJumpBackwardTrigger = "<c-k>"
+let g:UltiSnipsRemoveSelectModeMappings = 0
+" optional
+inoremap <silent> <c-u> <c-r>=cm#sources#ultisnips#trigger_or_popup("\<Plug>(ultisnips_expand)")<cr>
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " netrw (Default vim file browser)
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:netrw_banner = 0
 let g:netrw_liststyle = 0
 noremap <Leader>n :Vexplore<CR>
 
-" Airline
-let g:airline_powerline_fonts = 1 "Use powerline fonts with airline
-let g:airline#extensions#tabline#enabled = 1 "Enable tabline
 
-
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Ctrl-p
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:ctrlp_map = '<Leader>o'  " Shortcut to open ctrl-p
 " Shortcut for recent files
 nmap <Leader>r :CtrlPMRU<CR>
 let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
 let g:ctrlp_clear_cache_on_exit = 0
 let g:ctrlp_user_command = 'ag %s -l --nocolor -g ••'
+" let g:ctrlp_user_command = {
+"   \ 'types': {
+"     \ 1: ['.git', 'ag -l --nocolor -g "" %s/{src/dir1,src/dir2}/'],
+"     \ },
+"   \ 'fallback': 'find %s -type f'
+"   \ }
 
 
-" vim-commentary
-" Use // instead of /* */ comments for cpp files
-autocmd FileType cpp setlocal commentstring=//\ %s
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Airline
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:airline_powerline_fonts = 1 "Use powerline fonts with airline
+let g:airline#extensions#tabline#enabled = 1 "Enable tabline
 
 
-" YouCompleteMe
-nnoremap <Leader>g :YcmCompleter GoTo<CR>
-let g:ycm_key_detailed_diagnostics = '<leader>d'
-" Close preview window after user leaves insert mode
-" let g:ycm_autoclose_preview_window_after_insertion = 1
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" nvim-completion-manager
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
 
 
-" UtliSnips
-let g:UltiSnipsExpandTrigger = "<C-J>"
-let g:UltiSnipsJumpForwardTrigger = "<C-J>"
-let g:UltiSnipsJumpBackwardTrigger = "<C-K>"
-
-
-
-
-
-
-
-
-
-" Old stuff
-"
-"Plugin 'scrooloose/nerdtree'
-"Plugin 'scrooloose/nerdcommenter'
-"Plugin 'Raimondi/delimitMate'
-
-" Plug 'majutsushi/tagbar'
-
-"
-"let NERDTreeShowBookmarks=1
-"let NERDTreeQuitOnOpen=1
-"let NERDTreeChDirMode=0 " never change dir
-""let NERDTreeChDirMode=2 " change dir whenever the tree root is changed
-"
-"noremap <Leader>n :NERDTreeToggle<CR>
-"noremap <Leader>s :TagbarToggle<CR>
-"
-"let g:tagbar_left=1
-"
-"let delimitMate_expand_cr = 2
-"let delimitMate_expand_space = 1
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" LanguageClient-neovim
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set hidden
+let g:LanguageClient_settingsPath = '/home/mjung/.config/nvim/settings.json'
+let g:LanguageClient_serverCommands = {
+\ 'cpp': ['cquery', '--language-server', '--log-file=/tmp/cq.log', '--log-stdin-stdout-to-stderr']
+\ }
+let g:LanguageClient_loadSettings = 1
+let g:LanguageClient_loggingLevel = 'DEBUG'
+nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
+nnoremap <silent> <Leader>g :call LanguageClient_textDocument_definition()<CR>
+nnoremap <silent> <Leader>u :call LanguageClient_textDocument_references()<CR>
+nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
