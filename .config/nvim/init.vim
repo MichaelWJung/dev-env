@@ -25,6 +25,9 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ 'do': 'bash install.sh',
     \ }
 Plug 'roxma/nvim-completion-manager'
+Plug 'roxma/LanguageServer-php-neovim',  {
+    \ 'do': 'composer install && composer run-script parse-stubs'
+    \ }
 
 " Commenting
 Plug 'tpope/vim-commentary'
@@ -214,3 +217,9 @@ nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
 nnoremap <silent> <Leader>g :call LanguageClient_textDocument_definition()<CR>
 nnoremap <silent> <Leader>u :call LanguageClient_textDocument_references()<CR>
 nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Filetype-specific settings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+autocmd FileType php LanguageClientStart
