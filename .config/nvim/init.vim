@@ -100,11 +100,6 @@ set list            " Enable highlighting of the listchars
 
 syntax on
 
-" Better recognition of gitcommit files when using the git worktree feature
-autocmd FileType gitcommit setlocal textwidth=72
-autocmd FileType gitcommit setlocal colorcolumn=73
-autocmd BufNewFile,BufRead *.git/worktrees/**/COMMIT_EDITMSG setf gitcommit
-
 let g:load_doxygen_syntax = 1 "Doxygen syntax highlighting by default
 
 set colorcolumn=81
@@ -223,3 +218,8 @@ nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
 " Filetype-specific settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 autocmd FileType php LanguageClientStart
+
+" Better recognition of gitcommit files when using the git worktree feature
+autocmd FileType gitcommit setlocal textwidth=72
+autocmd FileType gitcommit setlocal colorcolumn=73
+autocmd BufNewFile,BufRead *.git/worktrees/**/COMMIT_EDITMSG setf gitcommit
