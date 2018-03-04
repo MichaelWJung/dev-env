@@ -50,6 +50,12 @@ Plug 'tpope/vim-repeat'
 " Surrounding with parentheses, brackets, etc.
 Plug 'tpope/vim-surround'
 
+" Add closing HTML tags
+Plug 'alvan/vim-closetag'
+
+" Better HTML indentation in PHP files
+Plug 'captbaritone/better-indent-support-for-php-with-html'
+
 " Enhance file browser
 Plug 'tpope/vim-vinegar'
 call plug#end()
@@ -130,6 +136,9 @@ nmap öö <C-^>
 tnoremap <Esc> <C-\><C-n>
 " Make <Esc> key available again with <C-v> prefix
 tnoremap <C-v><Esc> <Esc>
+
+" Enable built-in matchit plugin
+runtime macros/matchit.vim
 
 " Look for a tags file from the current directory upto $HOME.
 set tags=./tags;$HOME
@@ -218,6 +227,10 @@ nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
 " Filetype-specific settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 autocmd FileType php LanguageClientStart
+autocmd FileType php,html setlocal shiftwidth=2
+
+let g:html_indent_inctags="p"
+let g:html_indent_autotags="html,head,body"
 
 " Better recognition of gitcommit files when using the git worktree feature
 autocmd FileType gitcommit setlocal textwidth=72
