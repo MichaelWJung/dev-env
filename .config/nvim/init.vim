@@ -143,6 +143,20 @@ runtime macros/matchit.vim
 " Look for a tags file from the current directory upto $HOME.
 set tags=./tags;$HOME
 
+" Remap backspace to remove automatic comment leaders as a whole.  As this
+" interferes with auto-pairs we need to disable AutoPairsMapBS and call it
+" manually.
+inoremap <silent><expr> <bs> getline('.') =~# '^\s*\(//\\|#\\|%\\|"\)\s*$' ?
+    \ "<c-u>" : "<C-R>=AutoPairsDelete()<CR>"
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" auto-pairs
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Interferes with the manually set backspace remap above. The behavior is
+" manually added to the remap above.
+let g:AutoPairsMapBS = 0
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-commentary
@@ -170,7 +184,7 @@ let g:UltiSnipsJumpForwardTrigger = "<c-j>"
 let g:UltiSnipsJumpBackwardTrigger = "<c-k>"
 let g:UltiSnipsRemoveSelectModeMappings = 0
 " optional
-inoremap <silent> <c-u> <c-r>=cm#sources#ultisnips#trigger_or_popup("\<Plug>(ultisnips_expand)")<cr>
+" inoremap <silent> <c-u> <c-r>=cm#sources#ultisnips#trigger_or_popup("\<Plug>(ultisnips_expand)")<cr>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
