@@ -161,8 +161,8 @@ let g:AutoPairsMapBS = 0
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-commentary
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Use // instead of /* */ comments for cpp files
-autocmd FileType cpp setlocal commentstring=//\ %s
+" Use // instead of /* */ comments for cpp and php files
+autocmd FileType cpp,php setlocal commentstring=//\ %s
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
