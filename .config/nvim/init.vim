@@ -233,8 +233,10 @@ inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
 set hidden
 let g:LanguageClient_settingsPath = '/home/mjung/.config/nvim/settings.json'
 let g:LanguageClient_serverCommands = {
-\ 'cpp': ['cquery', '--language-server', '--log-file=/tmp/cq.log', '--log-stdin-stdout-to-stderr']
+\ 'cpp': ['cquery', '--language-server'],
+\ 'python': ['pyls']
 \ }
+" \ 'cpp': ['cquery', '--language-server', '--log-file=/tmp/cq.log', '--log-stdin-stdout-to-stderr']
 let g:LanguageClient_loadSettings = 1
 let g:LanguageClient_loggingLevel = 'DEBUG'
 nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
@@ -248,6 +250,9 @@ nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 autocmd FileType php LanguageClientStart
 autocmd FileType php,html setlocal shiftwidth=2
+
+autocmd FileType python setlocal textwidth=79
+autocmd FileType python setlocal colorcolumn=80
 
 let g:html_indent_inctags="p"
 let g:html_indent_autotags="html,head,body"
