@@ -117,6 +117,8 @@ colorscheme solarized
 
 set mouse=a
 
+set hidden
+
 " Easier navigation among splits
 nnoremap <c-j> <c-w>j
 nnoremap <c-k> <c-w>k
@@ -245,6 +247,9 @@ let g:syntastic_rust_checkers = ['cargo']
 " Filetype-specific settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 autocmd FileType php,html setlocal shiftwidth=2
+
+autocmd FileType python setlocal textwidth=79
+autocmd FileType python setlocal colorcolumn=80
 
 let g:html_indent_inctags="p"
 let g:html_indent_autotags="html,head,body"
