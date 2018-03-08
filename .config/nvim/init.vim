@@ -118,6 +118,8 @@ colorscheme solarized
 
 set mouse=a
 
+set hidden
+
 " Easier navigation among splits
 nnoremap <c-j> <c-w>j
 nnoremap <c-k> <c-w>k
@@ -230,7 +232,6 @@ inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " LanguageClient-neovim
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set hidden
 let g:LanguageClient_settingsPath = '/home/mjung/.config/nvim/settings.json'
 let g:LanguageClient_serverCommands = {
 \ 'cpp': ['cquery', '--language-server'],
