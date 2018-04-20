@@ -24,7 +24,11 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
     \ 'do': 'bash install.sh',
     \ }
-Plug 'roxma/nvim-completion-manager'
+
+" Completion manager
+Plug 'Shougo/deoplete.nvim'
+
+" PHP language server
 Plug 'roxma/LanguageServer-php-neovim',  {
     \ 'do': 'composer install && composer run-script parse-stubs'
     \ }
@@ -225,8 +229,9 @@ let g:airline#extensions#tabline#enabled = 1 "Enable tabline
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" nvim-completion-manager
+" deoplete.nvim
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:deoplete#enable_at_startup = 1
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
