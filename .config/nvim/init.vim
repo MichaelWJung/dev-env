@@ -183,15 +183,11 @@ let g:closetag_filenames = "*.html,*.php"
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " UtliSnips
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" let g:UltiSnipsExpandTrigger = "<C-J>"
-" let g:UltiSnipsJumpForwardTrigger = "<C-J>"
-" let g:UltiSnipsJumpBackwardTrigger = "<C-K>"
-"
-let g:UltiSnipsSnippetsDir = "~/.local/share/nvim/UltiSnips"
-let g:UltiSnipsExpandTrigger = "<Plug>(ultisnips_expand)"
-let g:UltiSnipsJumpForwardTrigger = "<c-j>"
-let g:UltiSnipsJumpBackwardTrigger = "<c-k>"
-let g:UltiSnipsRemoveSelectModeMappings = 0
+let g:UltiSnipsSnippetsDir = $HOME."/.config/nvim/UltiSnips/"
+let g:UltiSnipsExpandTrigger = "<C-J>"
+let g:UltiSnipsJumpForwardTrigger = "<C-J>"
+let g:UltiSnipsJumpBackwardTrigger = "<C-K>"
+" let g:UltiSnipsRemoveSelectModeMappings = 0
 " optional
 " inoremap <silent> <c-u> <c-r>=cm#sources#ultisnips#trigger_or_popup("\<Plug>(ultisnips_expand)")<cr>
 
