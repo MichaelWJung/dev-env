@@ -82,6 +82,7 @@ set autoindent      " Copy indent from current line when starting a new line
 set smartindent
 
 set number          " Show line numbers.
+set relativenumber  " Show relative line numbers.
 set showmatch       " When a bracket is inserted, briefly jump to the matching
                     " one. The jump is only done if the match can be seen on the
                     " screen. The time to show the match can be set with
@@ -103,6 +104,12 @@ set laststatus=2    " Display status line even if only one window is currently
                     " visible
 set listchars=tab:»\  " highlight tabs
 set list            " Enable highlighting of the listchars
+
+augroup numbertoggle
+    autocmd!
+    autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+    autocmd BufLeave,FocusLost,InsertEnter * set norelativenumber
+augroup END
 
 syntax on
 
