@@ -235,7 +235,7 @@ inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " LanguageClient-neovim
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:LanguageClient_settingsPath = '/home/mjung/.config/nvim/settings.json'
+let g:LanguageClient_settingsPath = $HOME.'/.config/nvim/settings.json'
 let g:LanguageClient_serverCommands = {
 \ 'cpp': ['cquery', '--language-server'],
 \ 'python': ['pyls']
