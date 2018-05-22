@@ -24,7 +24,7 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
     \ 'do': 'bash install.sh',
     \ }
-Plug 'roxma/nvim-completion-manager'
+Plug 'MichaelWJung/nvim-completion-manager'
 Plug 'roxma/LanguageServer-php-neovim',  {
     \ 'do': 'composer install && composer run-script parse-stubs'
     \ }
