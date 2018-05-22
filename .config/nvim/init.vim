@@ -230,6 +230,10 @@ let g:airline#extensions#tabline#enabled = 1 "Enable tabline
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
+let g:cm_matcher = {
+  \ 'module': 'cm_matchers.abbrev_matcher',
+  \ 'case': 'smartcase',
+  \ }
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
