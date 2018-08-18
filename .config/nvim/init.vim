@@ -257,7 +257,7 @@ nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
 " Filetype-specific settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 autocmd FileType php LanguageClientStart
-autocmd FileType php,html setlocal shiftwidth=2
+autocmd FileType php,html,javascript setlocal shiftwidth=2
 
 autocmd FileType python setlocal textwidth=79
 autocmd FileType python setlocal colorcolumn=80
