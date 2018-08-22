@@ -213,6 +213,8 @@ noremap <Leader>n :Vexplore<CR>
 " Ctrl-p
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:ctrlp_map = '<Leader>o'  " Shortcut to open ctrl-p
+" If the file is already open in a window somewhere, do not jump to it
+let g:ctrlp_switch_buffer = '0'
 " Shortcut for recent files
 nmap <Leader>r :CtrlPMRU<CR>
 let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
