@@ -19,12 +19,19 @@ Plug 'edkolev/tmuxline.vim'
 " Fuzzy search
 Plug 'ctrlpvim/ctrlp.vim'
 
+" A dependency of 'ncm2'.
+Plug 'roxma/nvim-yarp'
+" v2 of the nvim-completion-manager.
+Plug 'ncm2/ncm2'
+Plug 'ncm2/ncm2-bufword'
+Plug 'ncm2/ncm2-path'
+
 " Client for Language Server Protocol
 Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
     \ 'do': 'bash install.sh',
     \ }
-Plug 'MichaelWJung/nvim-completion-manager'
+
 Plug 'roxma/LanguageServer-php-neovim',  {
     \ 'do': 'composer install && composer run-script parse-stubs'
     \ }
@@ -33,6 +40,7 @@ Plug 'roxma/LanguageServer-php-neovim',  {
 Plug 'tpope/vim-commentary'
 
 " Snippets
+Plug 'ncm2/ncm2-ultisnips'
 Plug 'SirVer/ultisnips'
 
 " Highlight trailing whitespace
@@ -186,10 +194,11 @@ let g:closetag_filenames = "*.html,*.php"
 let g:UltiSnipsSnippetsDir = $HOME."/.config/nvim/UltiSnips/"
 let g:UltiSnipsJumpForwardTrigger = "<C-J>"
 let g:UltiSnipsJumpBackwardTrigger = "<C-K>"
-" let g:UltiSnipsRemoveSelectModeMappings = 0
+let g:UltiSnipsRemoveSelectModeMappings = 0
 
 let g:UltiSnipsExpandTrigger = "<Plug>(ultisnips_expand)"
-inoremap <silent> <c-j> <c-r>=cm#sources#ultisnips#trigger_or_popup("\<Plug>(ultisnips_expand)")<cr>
+" inoremap <silent> <c-j> <c-r>=cm#sources#ultisnips#trigger_or_popup("\<Plug>(ultisnips_expand)")<cr>
+inoremap <silent> <expr> <C-J> ncm2_ultisnips#expand_or("\<C-J>", 'n')
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -225,15 +234,27 @@ let g:airline#extensions#tabline#enabled = 1 "Enable tabline
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" nvim-completion-manager
+" ncm2
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Enable ncm2 in all buffers
+autocmd BufEnter * call ncm2#enable_for_buffer()
+
+" Affects the visual representation of what happens after you hit <C-x><C-o>
+" https://neovim.io/doc/user/insert.html#i_CTRL-X_CTRL-O
+" https://neovim.io/doc/user/options.html#'completeopt'
+"
+" This will show the popup menu even if there's only one match (menuone),
+" prevent automatic selection (noselect) and prevent automatic text injection
+" into the current line (noinsert).
+set completeopt=noinsert,menuone,noselect
+
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
-let g:cm_matcher = {
-  \ 'module': 'cm_matchers.abbrev_matcher',
-  \ 'case': 'smartcase',
-  \ }
+" let g:cm_matcher = {
+"   \ 'module': 'cm_matchers.abbrev_matcher',
+"   \ 'case': 'smartcase',
+"   \ }
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
