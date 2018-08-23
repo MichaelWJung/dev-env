@@ -70,6 +70,9 @@ Plug 'tpope/vim-vinegar'
 
 " Collection of language packs
 Plug 'sheerun/vim-polyglot'
+
+" Quickly switch between header and source files
+Plug 'vim-scripts/a.vim'
 call plug#end()
 
 
