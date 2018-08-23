@@ -210,7 +210,6 @@ let g:UltiSnipsJumpBackwardTrigger = "<C-K>"
 let g:UltiSnipsRemoveSelectModeMappings = 0
 
 let g:UltiSnipsExpandTrigger = "<Plug>(ultisnips_expand)"
-" inoremap <silent> <c-j> <c-r>=cm#sources#ultisnips#trigger_or_popup("\<Plug>(ultisnips_expand)")<cr>
 inoremap <silent> <expr> <C-J> ncm2_ultisnips#expand_or("\<C-J>", 'n')
 
 
@@ -266,10 +265,6 @@ set completeopt=noinsert,menuone,noselect
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
-" let g:cm_matcher = {
-"   \ 'module': 'cm_matchers.abbrev_matcher',
-"   \ 'case': 'smartcase',
-"   \ }
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
