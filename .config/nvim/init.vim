@@ -67,6 +67,9 @@ Plug 'captbaritone/better-indent-support-for-php-with-html'
 
 " Enhance file browser
 Plug 'tpope/vim-vinegar'
+
+" Collection of language packs
+Plug 'sheerun/vim-polyglot'
 call plug#end()
 
 
