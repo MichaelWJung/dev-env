@@ -123,6 +123,8 @@ set updatetime=100  " After this time of inactivity the swapfile will be
                     " written. This affects the timing of the gitgutter plugin.
 set foldmethod=syntax " Fold files as defined by language syntax
 set nofoldenable    " Do not fold by default
+set foldlevel=20    " Deep default foldlevel so only innermost fold will be used
+                    " by default
 
 augroup numbertoggle
     autocmd!
