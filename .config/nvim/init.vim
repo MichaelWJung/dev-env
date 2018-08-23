@@ -51,6 +51,7 @@ Plug 'jiangmiao/auto-pairs'
 
 " Git support inside vim
 Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
 
 " Repeat (.) support for plugin maps
 Plug 'tpope/vim-repeat'
@@ -112,6 +113,8 @@ set laststatus=2    " Display status line even if only one window is currently
                     " visible
 set listchars=tab:»\  " highlight tabs
 set list            " Enable highlighting of the listchars
+set updatetime=100  " After this time of inactivity the swapfile will be
+                    " written. This affects the timing of the gitgutter plugin.
 
 augroup numbertoggle
     autocmd!
