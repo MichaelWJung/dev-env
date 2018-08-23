@@ -299,7 +299,5 @@ autocmd FileType python setlocal colorcolumn=80
 let g:html_indent_inctags="p"
 let g:html_indent_autotags="html,head,body"
 
-" Better recognition of gitcommit files when using the git worktree feature
 autocmd FileType gitcommit setlocal textwidth=72
 autocmd FileType gitcommit setlocal colorcolumn=73
-autocmd BufNewFile,BufRead *.git/worktrees/**/COMMIT_EDITMSG setf gitcommit
