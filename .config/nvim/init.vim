@@ -121,6 +121,8 @@ set listchars=tab:»\  " highlight tabs
 set list            " Enable highlighting of the listchars
 set updatetime=100  " After this time of inactivity the swapfile will be
                     " written. This affects the timing of the gitgutter plugin.
+set foldmethod=syntax " Fold files as defined by language syntax
+set nofoldenable    " Do not fold by default
 
 augroup numbertoggle
     autocmd!
