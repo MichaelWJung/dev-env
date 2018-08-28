@@ -46,6 +46,9 @@ Plug 'SirVer/ultisnips'
 " Highlight trailing whitespace
 Plug 'ntpeters/vim-better-whitespace'
 
+" Highlight yanked text
+Plug 'machakann/vim-highlightedyank'
+
 " Automatic pairs of (), [], etc.
 Plug 'jiangmiao/auto-pairs'
 
