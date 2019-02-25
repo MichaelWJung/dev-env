@@ -31,6 +31,8 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
     \ 'do': 'bash install.sh',
     \ }
+" Multi-entry selection UI. Used by LanguageClient-neovim.
+Plug 'junegunn/fzf'
 
 Plug 'roxma/LanguageServer-php-neovim',  {
     \ 'do': 'composer install && composer run-script parse-stubs'
@@ -75,7 +77,7 @@ Plug 'tpope/vim-vinegar'
 Plug 'sheerun/vim-polyglot'
 
 " Quickly switch between header and source files
-Plug 'vim-scripts/a.vim'
+" Plug'vim-scripts/a.vim'
 call plug#end()
 
 
@@ -201,7 +203,7 @@ autocmd FileType cpp,php setlocal commentstring=//\ %s
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-closetag
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:closetag_filenames = "*.html,*.php"
+let g:closetag_filenames = "*.html,*.php,*.jsx"
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -276,13 +278,21 @@ inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
 let g:LanguageClient_settingsPath = $HOME.'/.config/nvim/settings.json'
 let g:LanguageClient_serverCommands = {
 \ 'cpp': ['cquery', '--language-server'],
-\ 'python': ['pyls']
+\ 'rust': ['rustup', 'run', 'stable', 'rls'],
+\ 'python': ['pyls'],
+\ 'javascript.jsx': ['npx', 'javascript-typescript-stdio']
 \ }
-" \ 'cpp': ['cquery', '--language-server', '--log-file=/tmp/cq.log', '--log-stdin-stdout-to-stderr']
-let g:LanguageClient_loadSettings = 1
-let g:LanguageClient_loggingLevel = 'DEBUG'
+" \ 'cpp': ['cquery', '--language-server', '--log-file=/tmp/cq.log', '--log-stdin-stdout-to-stderr'],
+
+" LC asks for completions with snippets
+let g:LanguageClient_hasSnippetSupport = 1
+" let g:LanguageClient_loggingLevel = 'DEBUG'
+" let g:LanguageClient_loggingFile = '/tmp/LanguageClient.log'
+
 nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
 nnoremap <silent> <Leader>g :call LanguageClient_textDocument_definition()<CR>
+nnoremap <silent> <Leader>t :call LanguageClient_textDocument_typeDefinition()<CR>
+nnoremap <silent> <Leader>i :call LanguageClient_textDocument_implementation()<CR>
 nnoremap <silent> <Leader>u :call LanguageClient_textDocument_references()<CR>
 nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
 
