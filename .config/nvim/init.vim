@@ -16,9 +16,6 @@ Plug 'christoomey/vim-tmux-navigator'
 " Generate tmux statusline which matches vim’s
 Plug 'edkolev/tmuxline.vim'
 
-" Fuzzy search
-Plug 'ctrlpvim/ctrlp.vim'
-
 " A dependency of 'ncm2'.
 Plug 'roxma/nvim-yarp'
 " v2 of the nvim-completion-manager.
@@ -33,6 +30,7 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ }
 " Multi-entry selection UI. Used by LanguageClient-neovim.
 Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
 
 Plug 'roxma/LanguageServer-php-neovim',  {
     \ 'do': 'composer install && composer run-script parse-stubs'
@@ -243,22 +241,11 @@ let g:clang_format#command = 'clang-format-4.0'
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Ctrl-p
+" Fzf
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:ctrlp_map = '<Leader>o'  " Shortcut to open ctrl-p
-" If the file is already open in a window somewhere, do not jump to it
-let g:ctrlp_switch_buffer = '0'
-" Shortcut for recent files
-nmap <Leader>r :CtrlPMRU<CR>
-let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
-let g:ctrlp_clear_cache_on_exit = 0
-let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-" let g:ctrlp_user_command = {
-"   \ 'types': {
-"     \ 1: ['.git', 'ag -l --nocolor -g "" %s/{src/dir1,src/dir2}/'],
-"     \ },
-"   \ 'fallback': 'find %s -type f'
-"   \ }
+let g:fzf_command_prefix = 'Fzf'
+nmap <silent> <Leader>o :FzfFiles<CR>
+nmap <silent> <Leader>r :FzfHistory<CR>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
