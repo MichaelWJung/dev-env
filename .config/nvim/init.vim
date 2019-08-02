@@ -76,8 +76,14 @@ Plug 'tpope/vim-vinegar'
 " Collection of language packs
 Plug 'sheerun/vim-polyglot'
 
+" Shortcuts for toggling location and quick fix lists
+Plug 'Valloric/ListToggle'
+
+" Call clang-format from vim
+Plug 'rhysd/vim-clang-format'
+
 " Quickly switch between header and source files
-" Plug'vim-scripts/a.vim'
+" Plug 'vim-scripts/a.vim'
 call plug#end()
 
 
@@ -167,6 +173,9 @@ nmap güü g<C-]>
 nmap <C-W>üü <C-W><C-]>
 nmap öö <C-^>
 
+nnoremap <Leader>f :ClangFormat<CR>
+vnoremap <Leader>f :ClangFormat<CR>
+
 " Get out of terminal mode with <Esc>
 tnoremap <Esc> <C-\><C-n>
 " Make <Esc> key available again with <C-v> prefix
@@ -198,6 +207,7 @@ let g:AutoPairsMapBS = 0
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Use // instead of /* */ comments for cpp and php files
 autocmd FileType cpp,php setlocal commentstring=//\ %s
+autocmd FileType cmake setlocal commentstring=#\ %s
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -227,6 +237,12 @@ noremap <Leader>n :Vexplore<CR>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" vim-clang-format
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:clang_format#command = 'clang-format-4.0'
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Ctrl-p
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:ctrlp_map = '<Leader>o'  " Shortcut to open ctrl-p
@@ -236,7 +252,7 @@ let g:ctrlp_switch_buffer = '0'
 nmap <Leader>r :CtrlPMRU<CR>
 let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
 let g:ctrlp_clear_cache_on_exit = 0
-let g:ctrlp_user_command = 'ag %s -l --nocolor -g ••'
+let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 " let g:ctrlp_user_command = {
 "   \ 'types': {
 "     \ 1: ['.git', 'ag -l --nocolor -g "" %s/{src/dir1,src/dir2}/'],
@@ -270,14 +286,16 @@ set completeopt=noinsert,menuone,noselect
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
+inoremap <silent> <C-Space> <C-r>=ncm2#force_trigger()<CR>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " LanguageClient-neovim
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:LanguageClient_loadSettings = 1
 let g:LanguageClient_settingsPath = $HOME.'/.config/nvim/settings.json'
 let g:LanguageClient_serverCommands = {
-\ 'cpp': ['cquery', '--language-server'],
+\ 'cpp': ['clangd-9', '--background-index'],
 \ 'rust': ['rustup', 'run', 'stable', 'rls'],
 \ 'python': ['pyls'],
 \ 'javascript.jsx': ['npx', 'javascript-typescript-stdio']
@@ -285,7 +303,7 @@ let g:LanguageClient_serverCommands = {
 " \ 'cpp': ['cquery', '--language-server', '--log-file=/tmp/cq.log', '--log-stdin-stdout-to-stderr'],
 
 " LC asks for completions with snippets
-let g:LanguageClient_hasSnippetSupport = 1
+" let g:LanguageClient_hasSnippetSupport = 1
 " let g:LanguageClient_loggingLevel = 'DEBUG'
 " let g:LanguageClient_loggingFile = '/tmp/LanguageClient.log'
 

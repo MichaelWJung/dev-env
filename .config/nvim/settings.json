@@ -1,6 +1,10 @@
 {
-        "initializationOptions": {
-                "cacheDirectory": "/tmp/cquery",
-                "indexerCount": 10
-        }
+  "pyls": {
+    "configurationSources": ["flake8"],
+    "plugins": {
+      "pylint": {
+        "enabled": true
+      }
+    }
+  }
 }
