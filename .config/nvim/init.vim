@@ -4,7 +4,8 @@
 call plug#begin('~/.local/share/nvim/plugged')
 
 " solarized colorscheme
-Plug 'altercation/vim-colors-solarized'
+" Plug 'altercation/vim-colors-solarized'
+Plug 'iCyMind/NeoSolarized'
 
 " Nice vim statusline
 Plug 'vim-airline/vim-airline'
@@ -134,6 +135,7 @@ set foldmethod=syntax " Fold files as defined by language syntax
 set nofoldenable    " Do not fold by default
 set foldlevel=20    " Deep default foldlevel so only innermost fold will be used
                     " by default
+set termguicolors
 
 augroup numbertoggle
     autocmd!
@@ -151,7 +153,8 @@ set nowrap
 set backspace=indent,eol,start
 
 set background=light
-colorscheme solarized
+" colorscheme solarized
+colorscheme NeoSolarized
 
 set mouse=a
 
@@ -237,7 +240,7 @@ noremap <Leader>n :Vexplore<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-clang-format
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:clang_format#command = 'clang-format-4.0'
+let g:clang_format#command = 'clang-format'
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -299,6 +302,8 @@ nnoremap <silent> <Leader>g :call LanguageClient_textDocument_definition()<CR>
 nnoremap <silent> <Leader>t :call LanguageClient_textDocument_typeDefinition()<CR>
 nnoremap <silent> <Leader>i :call LanguageClient_textDocument_implementation()<CR>
 nnoremap <silent> <Leader>u :call LanguageClient_textDocument_references()<CR>
+nnoremap <silent> <Leader>a :call LanguageClient_textDocument_codeAction()<CR>
+nnoremap <silent> <Leader>e :call LanguageClient#explainErrorAtPoint()<CR>
 nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
 
 
