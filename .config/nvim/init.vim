@@ -73,6 +73,14 @@ Plug 'tpope/vim-vinegar'
 " Shortcuts for toggling location and quick fix lists
 Plug 'Valloric/ListToggle'
 
+" Clojure stuff
+Plug 'tpope/vim-fireplace'
+Plug 'guns/vim-sexp'
+Plug 'tpope/vim-sexp-mappings-for-regular-people'
+
+" Rainbow parentheses
+Plug 'luochen1990/rainbow'
+
 " Quickly switch between header and source files
 " Plug 'vim-scripts/a.vim'
 call plug#end()
@@ -287,8 +295,17 @@ if executable('pyls')
     \ }}})
 endif
 
-" let g:lsp_log_verbose = 1
-" let g:lsp_log_file = expand('/tmp/vim-lsp.log')
+if executable('clojure-lsp')
+  au User lsp_setup call lsp#register_server({
+    \ 'name': 'clojure-lsp',
+    \ 'cmd': ['bash', '-c', '/home/mjung/.local/bin/clojure-lsp'],
+    \ 'whitelist': ['clojure']
+    \ })
+endif
+
+" 'rust': ['rustup', 'run', 'stable', 'rls'],
+" 'python': ['pyls'],
+" 'javascript.jsx': ['npx', 'javascript-typescript-stdio'],
 
 " Make it easier to set groups by color. Specific for the neosolarized color scheme.
 hi! link Black Normal
