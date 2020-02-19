@@ -376,10 +376,34 @@ inoremap <expr> <CR>    pumvisible() ? "\<C-y>" : "\<CR>"
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" vim-fireplace
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+au Filetype clojure nnoremap <silent> <Leader>x :Require<CR>
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Rainbow parentheses
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:rainbow_active = 1 "set to 0 if you want to enable it later via :RainbowToggle
+
+let g:rainbow_conf = {
+\    'ctermfgs': ['136', '166', '160', '125', '61', '33', '37', '64'],
+\    'guis': [''],
+\    'cterms': [''],
+\    'operators': '_,_',
+\    'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
+\}
+
+
+
+
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Filetype-specific settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 autocmd FileType php LanguageClientStart
-autocmd FileType php,html,javascript setlocal shiftwidth=2
+autocmd FileType php,html,javascript,css setlocal shiftwidth=2
 
 autocmd FileType python setlocal textwidth=79
 autocmd FileType python setlocal colorcolumn=80
