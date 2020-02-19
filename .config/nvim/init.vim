@@ -17,32 +17,25 @@ Plug 'christoomey/vim-tmux-navigator'
 " Generate tmux statusline which matches vim’s
 Plug 'edkolev/tmuxline.vim'
 
-" A dependency of 'ncm2'.
-Plug 'roxma/nvim-yarp'
-" v2 of the nvim-completion-manager.
-Plug 'ncm2/ncm2'
-Plug 'ncm2/ncm2-bufword'
-Plug 'ncm2/ncm2-path'
+" Snippets
+Plug 'SirVer/ultisnips'
 
-" Client for Language Server Protocol
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
+" Language client
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
+Plug 'thomasfaingnaert/vim-lsp-snippets'
+Plug 'thomasfaingnaert/vim-lsp-ultisnips'
+" Plug 'mattn/vim-lsp-settings'
+
 " Multi-entry selection UI. Used by LanguageClient-neovim.
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 
-Plug 'roxma/LanguageServer-php-neovim',  {
-    \ 'do': 'composer install && composer run-script parse-stubs'
-    \ }
-
 " Commenting
 Plug 'tpope/vim-commentary'
-
-" Snippets
-Plug 'ncm2/ncm2-ultisnips'
-Plug 'SirVer/ultisnips'
 
 " Highlight trailing whitespace
 Plug 'ntpeters/vim-better-whitespace'
@@ -73,13 +66,10 @@ Plug 'captbaritone/better-indent-support-for-php-with-html'
 Plug 'tpope/vim-vinegar'
 
 " Collection of language packs
-Plug 'sheerun/vim-polyglot'
+" Plug 'sheerun/vim-polyglot'
 
 " Shortcuts for toggling location and quick fix lists
 Plug 'Valloric/ListToggle'
-
-" Call clang-format from vim
-Plug 'rhysd/vim-clang-format'
 
 " Quickly switch between header and source files
 " Plug 'vim-scripts/a.vim'
@@ -174,9 +164,6 @@ nmap güü g<C-]>
 nmap <C-W>üü <C-W><C-]>
 nmap öö <C-^>
 
-nnoremap <Leader>f :ClangFormat<CR>
-vnoremap <Leader>f :ClangFormat<CR>
-
 " Get out of terminal mode with <Esc>
 tnoremap <Esc> <C-\><C-n>
 " Make <Esc> key available again with <C-v> prefix
@@ -187,20 +174,6 @@ runtime macros/matchit.vim
 
 " Look for a tags file from the current directory upto $HOME.
 set tags=./tags;$HOME
-
-" Remap backspace to remove automatic comment leaders as a whole.  As this
-" interferes with auto-pairs we need to disable AutoPairsMapBS and call it
-" manually.
-inoremap <silent><expr> <bs> getline('.') =~# '^\s*\(//\\|#\\|%\\|"\)\s*$' ?
-    \ "<c-u>" : "<C-R>=AutoPairsDelete()<CR>"
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" auto-pairs
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Interferes with the manually set backspace remap above. The behavior is
-" manually added to the remap above.
-let g:AutoPairsMapBS = 0
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -223,10 +196,8 @@ let g:closetag_filenames = "*.html,*.php,*.jsx"
 let g:UltiSnipsSnippetsDir = $HOME."/.config/nvim/UltiSnips/"
 let g:UltiSnipsJumpForwardTrigger = "<C-J>"
 let g:UltiSnipsJumpBackwardTrigger = "<C-K>"
+let g:UltiSnipsExpandTrigger = "<C-J>"
 let g:UltiSnipsRemoveSelectModeMappings = 0
-
-let g:UltiSnipsExpandTrigger = "<Plug>(ultisnips_expand)"
-inoremap <silent> <expr> <C-J> ncm2_ultisnips#expand_or("\<C-J>", 'n')
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -235,12 +206,6 @@ inoremap <silent> <expr> <C-J> ncm2_ultisnips#expand_or("\<C-J>", 'n')
 let g:netrw_banner = 0
 let g:netrw_liststyle = 0
 noremap <Leader>n :Vexplore<CR>
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" vim-clang-format
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:clang_format#command = 'clang-format'
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -259,52 +224,110 @@ let g:airline#extensions#tabline#enabled = 1 "Enable tabline
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" ncm2
+" vim-lsp
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Enable ncm2 in all buffers
-autocmd BufEnter * call ncm2#enable_for_buffer()
+let g:lsp_diagnostics_echo_cursor=1
+let g:lsp_semantic_enabled=1
+let g:lsp_highlight_references_enabled=1
+nnoremap <silent> K :LspHover<CR>
+nnoremap <silent> <Leader>g :LspDefinition<CR>
+nnoremap <silent> <Leader>t :LspTypeDefinition<CR>
+nnoremap <silent> <Leader>i :LspImplementation<CR>
+nnoremap <silent> <Leader>p :LspPeekDefinition<CR>
+nnoremap <silent> <Leader>P :LspPeekDeclaration<CR>
+nnoremap <silent> <Leader>u :LspReferences<CR>
+nnoremap <silent> <Leader>a :LspCodeAction<CR>
+nnoremap <silent> <Leader>f :LspDocumentFormat<CR>
+vnoremap <silent> <Leader>f :LspDocumentRangeFormat<CR>
+nnoremap <silent> <F2> :LspRename<CR>
+" nnoremap <silent> <Leader>e :call LanguageClient#explainErrorAtPoint()<CR>
 
-" Affects the visual representation of what happens after you hit <C-x><C-o>
-" https://neovim.io/doc/user/insert.html#i_CTRL-X_CTRL-O
-" https://neovim.io/doc/user/options.html#'completeopt'
-"
-" This will show the popup menu even if there's only one match (menuone),
-" prevent automatic selection (noselect) and prevent automatic text injection
-" into the current line (noinsert).
-set completeopt=noinsert,menuone,noselect
+if executable('clangd-10')
+  au User lsp_setup call lsp#register_server({
+    \ 'name': 'clangd',
+    \ 'cmd': ['clangd-10'],
+    \ 'whitelist': ['cpp'],
+    \ 'semantic_highlight': {
+    \     'entity.name.function.cpp': 'CppFunction',
+    \     'entity.name.function.method.cpp': 'CppMethod',
+    \     'entity.name.function.method.static.cpp': 'CppStaticMethod',
+    \     'entity.name.function.preprocessor.cpp': 'CppPreprocessor',
+    \     'entity.name.namespace.cpp': 'CppNamespace',
+    \     'entity.name.other.dependent.cpp': 'CppOtherDependent',
+    \     'entity.name.type.class.cpp': 'CppClass',
+    \     'entity.name.type.dependent.cpp': 'CppTypeDependent',
+    \     'entity.name.type.enum.cpp': 'CppEnum',
+    \     'entity.name.type.template.cpp': 'CppTemplate',
+    \     'entity.name.type.typedef.cpp': 'CppTypedef',
+    \     'meta.disabled': 'CppDisabled',
+    \     'storage.type.primitive.cpp': 'CppPrimitiveType',
+    \     'variable.other.cpp': 'CppOtherVariable',
+    \     'variable.other.enummember.cpp': 'CppEnumMember',
+    \     'variable.other.field.cpp': 'CppFieldVariable',
+    \     'variable.other.field.static.cpp': 'CppFieldStaticVariable',
+    \     'variable.other.local.cpp': 'CppLocalVariable',
+    \     'variable.parameter.cpp': 'CppParameter'
+    \ }
+    \ })
+endif
 
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+if executable('pyls')
+  au User lsp_setup call lsp#register_server({
+    \ 'name': 'pyls',
+    \ 'cmd': {server_info->['pyls']},
+    \ 'whitelist': ['python'],
+    \ })
+endif
+
+" Make it easier to set groups by color. Specific for the neosolarized color scheme.
+hi! link Black Normal
+hi! link Gray Comment
+hi! link Cyan Constant
+hi! link Blue Identifier
+hi! link Green Statement
+hi! link Orange PreProc
+hi! link Yellow Type
+hi! link Red Special
+hi! link Violet Underlined
+hi! link Magenta helpNote
+
+hi! link CppFunction           Blue
+hi! link CppMethod             Violet
+hi! link CppStaticMethod       Magenta
+hi! link CppPreprocessor       Orange
+hi! link CppNamespace          Cyan
+hi! link CppOtherDependent     Black
+hi! link CppClass              Red
+hi! link CppTypeDependent      Gray
+hi! link CppEnum               Yellow
+hi! link CppTemplate           Green
+hi! link CppTypedef            Red
+hi! link CppDisabled           Gray
+hi! link CppPrimitiveType      Magenta
+hi! link CppOtherVariable      Orange
+hi! link CppEnumMember         Orange
+hi! link CppFieldVariable      Cyan
+hi! link CppFieldStaticVariable Orange
+hi! link CppLocalVariable      Black
+hi! link CppParameter          Yellow
+
+hi! link cStorageClass         Green
+hi! link cType                 Magenta
+hi! link cppStructure          Green
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" asyncomplete.vim
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+call asyncomplete#register_source(asyncomplete#sources#ultisnips#get_source_options({
+  \ 'name': 'ultisnips',
+  \ 'whitelist': ['*'],
+  \ 'completor': function('asyncomplete#sources#ultisnips#completor'),
+  \ }))
+
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
-inoremap <silent> <C-Space> <C-r>=ncm2#force_trigger()<CR>
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" LanguageClient-neovim
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:LanguageClient_loadSettings = 1
-let g:LanguageClient_settingsPath = $HOME.'/.config/nvim/settings.json'
-let g:LanguageClient_serverCommands = {
-\ 'cpp': ['clangd-9', '--background-index'],
-\ 'rust': ['rustup', 'run', 'stable', 'rls'],
-\ 'python': ['pyls'],
-\ 'javascript.jsx': ['npx', 'javascript-typescript-stdio']
-\ }
-" \ 'cpp': ['cquery', '--language-server', '--log-file=/tmp/cq.log', '--log-stdin-stdout-to-stderr'],
-
-" LC asks for completions with snippets
-" let g:LanguageClient_hasSnippetSupport = 1
-" let g:LanguageClient_loggingLevel = 'DEBUG'
-" let g:LanguageClient_loggingFile = '/tmp/LanguageClient.log'
-
-nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
-nnoremap <silent> <Leader>g :call LanguageClient_textDocument_definition()<CR>
-nnoremap <silent> <Leader>t :call LanguageClient_textDocument_typeDefinition()<CR>
-nnoremap <silent> <Leader>i :call LanguageClient_textDocument_implementation()<CR>
-nnoremap <silent> <Leader>u :call LanguageClient_textDocument_references()<CR>
-nnoremap <silent> <Leader>a :call LanguageClient_textDocument_codeAction()<CR>
-nnoremap <silent> <Leader>e :call LanguageClient#explainErrorAtPoint()<CR>
-nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
+inoremap <expr> <CR>    pumvisible() ? "\<C-y>" : "\<CR>"
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
