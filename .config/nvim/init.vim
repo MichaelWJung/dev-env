@@ -24,6 +24,8 @@ Plug 'SirVer/ultisnips'
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-buffer.vim'
+Plug 'prabirshrestha/asyncomplete-file.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
 Plug 'thomasfaingnaert/vim-lsp-snippets'
@@ -323,6 +325,22 @@ call asyncomplete#register_source(asyncomplete#sources#ultisnips#get_source_opti
   \ 'name': 'ultisnips',
   \ 'whitelist': ['*'],
   \ 'completor': function('asyncomplete#sources#ultisnips#completor'),
+  \ }))
+
+call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
+  \ 'name': 'file',
+  \ 'whitelist': ['*'],
+  \ 'priority': 10,
+  \ 'completor': function('asyncomplete#sources#file#completor')
+  \ }))
+
+call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
+  \ 'name': 'buffer',
+  \ 'whitelist': ['*'],
+  \ 'completor': function('asyncomplete#sources#buffer#completor'),
+  \ 'config': {
+  \    'max_buffer_size': 5000000,
+  \ },
   \ }))
 
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
