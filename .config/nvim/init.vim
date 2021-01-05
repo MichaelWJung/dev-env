@@ -244,10 +244,13 @@ vnoremap <silent> <Leader>f :LspDocumentRangeFormat<CR>
 nnoremap <silent> <F2> :LspRename<CR>
 " nnoremap <silent> <Leader>e :call LanguageClient#explainErrorAtPoint()<CR>
 
-if executable('clangd-10')
+if executable('clangd')
   au User lsp_setup call lsp#register_server({
     \ 'name': 'clangd',
-    \ 'cmd': ['clangd-10'],
+    \ 'cmd': ['clangd', "--header-insertion=never",
+    \                   "--suggest-missing-includes",
+    \                   "--cross-file-rename",
+    \                   "--clang-tidy"],
     \ 'whitelist': ['cpp'],
     \ 'semantic_highlight': {
     \     'entity.name.function.cpp': 'CppFunction',
@@ -278,8 +281,14 @@ if executable('pyls')
     \ 'name': 'pyls',
     \ 'cmd': {server_info->['pyls']},
     \ 'whitelist': ['python'],
-    \ })
+    \ 'workspace_config': {'pyls': {
+    \     'configurationSources': ['flake8'],
+    \     'plugins': {'pylint': {'enabled': v:true}}
+    \ }}})
 endif
+
+" let g:lsp_log_verbose = 1
+" let g:lsp_log_file = expand('/tmp/vim-lsp.log')
 
 " Make it easier to set groups by color. Specific for the neosolarized color scheme.
 hi! link Black Normal
@@ -343,6 +352,7 @@ call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options
   \ },
   \ }))
 
+inoremap <c-space> <Plug>(asyncomplete_force_refresh)
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <CR>    pumvisible() ? "\<C-y>" : "\<CR>"
