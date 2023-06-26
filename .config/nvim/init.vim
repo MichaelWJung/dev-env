@@ -4,7 +4,6 @@
 call plug#begin('~/.local/share/nvim/plugged')
 
 " solarized colorscheme
-" Plug 'altercation/vim-colors-solarized'
 Plug 'iCyMind/NeoSolarized'
 
 " Nice vim statusline
@@ -18,25 +17,20 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'edkolev/tmuxline.vim'
 
 " Snippets
-Plug 'SirVer/ultisnips'
+Plug 'hrsh7th/vim-vsnip'
+Plug 'hrsh7th/vim-vsnip-integ'
 
 " Language client
-" Plug 'prabirshrestha/async.vim'
-" Plug 'prabirshrestha/vim-lsp'
-" Plug 'prabirshrestha/asyncomplete.vim'
-" Plug 'prabirshrestha/asyncomplete-buffer.vim'
-" Plug 'prabirshrestha/asyncomplete-file.vim'
-" Plug 'prabirshrestha/asyncomplete-lsp.vim'
-" Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
-" Plug 'thomasfaingnaert/vim-lsp-snippets'
-" Plug 'thomasfaingnaert/vim-lsp-ultisnips'
-" Plug 'mattn/vim-lsp-settings'
 Plug 'neovim/nvim-lspconfig'
-Plug 'hrsh7th/nvim-compe'
-Plug 'simrat39/rust-tools.nvim'
 Plug 'p00f/clangd_extensions.nvim'
-Plug 'theHamsta/nvim-semantic-tokens'
-" Plug 'nvim-lua/lsp_extensions.nvim'
+Plug 'simrat39/rust-tools.nvim'
+
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-vsnip'
 
 " Multi-entry selection UI. Used by LanguageClient-neovim.
 Plug 'junegunn/fzf'
@@ -159,7 +153,6 @@ set nowrap
 set backspace=indent,eol,start
 
 set background=light
-" colorscheme solarized
 colorscheme NeoSolarized
 
 set mouse=a
@@ -207,13 +200,13 @@ let g:closetag_filenames = "*.html,*.php,*.jsx"
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" UtliSnips
+" vim-vsnip
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:UltiSnipsSnippetsDir = $HOME."/.config/nvim/UltiSnips/"
-let g:UltiSnipsJumpForwardTrigger = "<C-J>"
-let g:UltiSnipsJumpBackwardTrigger = "<C-K>"
-let g:UltiSnipsExpandTrigger = "<C-J>"
-let g:UltiSnipsRemoveSelectModeMappings = 0
+" Jump forward or backward
+imap <expr> <C-j>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<C-j>'
+smap <expr> <C-j>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<C-j>'
+imap <expr> <C-k>   vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<C-k>'
+smap <expr> <C-k>   vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<C-k>'
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -256,162 +249,7 @@ nnoremap <silent> <Leader>K <cmd>lua vim.lsp.buf.signature_help()<CR>
 nnoremap <silent> <C-p> <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
 nnoremap <silent> <C-n> <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
 
-" autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-" autocmd InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *.rs
-"       \ :lua require'lsp_extensions'.inlay_hints{
-"       \     prefix = ' » ', enabled = {"TypeHint", "ChainingHint", "ParameterHint"}
-"       \ }
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" vim-lsp
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" let g:lsp_diagnostics_echo_cursor=1
-" let g:lsp_semantic_enabled=1
-" let g:lsp_highlight_references_enabled=1
-" nnoremap <silent> K :LspHover<CR>
-" nnoremap <silent> <Leader>g :LspDefinition<CR>
-" nnoremap <silent> <Leader>t :LspTypeDefinition<CR>
-" nnoremap <silent> <Leader>i :LspImplementation<CR>
-" nnoremap <silent> <Leader>p :LspPeekDefinition<CR>
-" nnoremap <silent> <Leader>P :LspPeekDeclaration<CR>
-" nnoremap <silent> <Leader>u :LspReferences<CR>
-" nnoremap <silent> <Leader>a :LspCodeAction<CR>
-" nnoremap <silent> <Leader>f :LspDocumentFormat<CR>
-" vnoremap <silent> <Leader>f :LspDocumentRangeFormat<CR>
-" nnoremap <silent> <F2> :LspRename<CR>
-" " nnoremap <silent> <Leader>e :call LanguageClient#explainErrorAtPoint()<CR>
-
-" if executable('clangd')
-"   au User lsp_setup call lsp#register_server({
-"     \ 'name': 'clangd',
-"     \ 'cmd': ['clangd', "--header-insertion=never",
-"     \                   "--suggest-missing-includes",
-"     \                   "--cross-file-rename",
-"     \                   "--clang-tidy"],
-"     \ 'whitelist': ['cpp'],
-"     \ 'semantic_highlight': {
-"     \     'entity.name.function.cpp': 'CppFunction',
-"     \     'entity.name.function.method.cpp': 'CppMethod',
-"     \     'entity.name.function.method.static.cpp': 'CppStaticMethod',
-"     \     'entity.name.function.preprocessor.cpp': 'CppPreprocessor',
-"     \     'entity.name.namespace.cpp': 'CppNamespace',
-"     \     'entity.name.other.dependent.cpp': 'CppOtherDependent',
-"     \     'entity.name.type.class.cpp': 'CppClass',
-"     \     'entity.name.type.dependent.cpp': 'CppTypeDependent',
-"     \     'entity.name.type.enum.cpp': 'CppEnum',
-"     \     'entity.name.type.template.cpp': 'CppTemplate',
-"     \     'entity.name.type.typedef.cpp': 'CppTypedef',
-"     \     'meta.disabled': 'CppDisabled',
-"     \     'storage.type.primitive.cpp': 'CppPrimitiveType',
-"     \     'variable.other.cpp': 'CppOtherVariable',
-"     \     'variable.other.enummember.cpp': 'CppEnumMember',
-"     \     'variable.other.field.cpp': 'CppFieldVariable',
-"     \     'variable.other.field.static.cpp': 'CppFieldStaticVariable',
-"     \     'variable.other.local.cpp': 'CppLocalVariable',
-"     \     'variable.parameter.cpp': 'CppParameter'
-"     \ }
-"     \ })
-" endif
-
-" if executable('pyls')
-"   au User lsp_setup call lsp#register_server({
-"     \ 'name': 'pyls',
-"     \ 'cmd': {server_info->['pyls']},
-"     \ 'whitelist': ['python'],
-"     \ 'workspace_config': {'pyls': {
-"     \     'configurationSources': ['flake8'],
-"     \     'plugins': {'pylint': {'enabled': v:true}}
-"     \ }}})
-"     \ })
-" endif
-
-" if executable('clojure-lsp')
-"   au User lsp_setup call lsp#register_server({
-"     \ 'name': 'clojure-lsp',
-"     \ 'cmd': ['bash', '-c', '/home/mjung/.local/bin/clojure-lsp'],
-"     \ 'whitelist': ['clojure']
-"     \ })
-" endif
-
-" if executable('rls')
-"   au User lsp_setup call lsp#register_server({
-"     \ 'name': 'rls',
-"     \ 'cmd': {server_info->['rustup', 'run', 'nightly', 'rls']},
-"     \ 'whitelist': ['rust'],
-"     \ })
-" endif
-
-" " 'rust': ['rustup', 'run', 'stable', 'rls'],
-" " 'python': ['pyls'],
-" " 'javascript.jsx': ['npx', 'javascript-typescript-stdio'],
-
-" " Make it easier to set groups by color. Specific for the neosolarized color scheme.
-" hi! link Black Normal
-" hi! link Gray Comment
-" hi! link Cyan Constant
-" hi! link Blue Identifier
-" hi! link Green Statement
-" hi! link Orange PreProc
-" hi! link Yellow Type
-" hi! link Red Special
-" hi! link Violet Underlined
-" hi! link Magenta helpNote
-
-" hi! link CppFunction           Blue
-" hi! link CppMethod             Violet
-" hi! link CppStaticMethod       Magenta
-" hi! link CppPreprocessor       Orange
-" hi! link CppNamespace          Cyan
-" hi! link CppOtherDependent     Black
-" hi! link CppClass              Red
-" hi! link CppTypeDependent      Gray
-" hi! link CppEnum               Yellow
-" hi! link CppTemplate           Green
-" hi! link CppTypedef            Red
-" hi! link CppDisabled           Gray
-" hi! link CppPrimitiveType      Magenta
-" hi! link CppOtherVariable      Orange
-" hi! link CppEnumMember         Orange
-" hi! link CppFieldVariable      Cyan
-" hi! link CppFieldStaticVariable Orange
-" hi! link CppLocalVariable      Black
-" hi! link CppParameter          Yellow
-
-" hi! link cStorageClass         Green
-" hi! link cType                 Magenta
-" hi! link cppStructure          Green
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" asyncomplete.vim
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" call asyncomplete#register_source(asyncomplete#sources#ultisnips#get_source_options({
-"   \ 'name': 'ultisnips',
-"   \ 'whitelist': ['*'],
-"   \ 'completor': function('asyncomplete#sources#ultisnips#completor'),
-"   \ }))
-
-" call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
-"   \ 'name': 'file',
-"   \ 'whitelist': ['*'],
-"   \ 'priority': 10,
-"   \ 'completor': function('asyncomplete#sources#file#completor')
-"   \ }))
-" 
-" call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
-"   \ 'name': 'buffer',
-"   \ 'whitelist': ['*'],
-"   \ 'completor': function('asyncomplete#sources#buffer#completor'),
-"   \ 'config': {
-"   \    'max_buffer_size': 5000000,
-"   \ },
-"   \ }))
-" 
-" inoremap <c-space> <Plug>(asyncomplete_force_refresh)
-" inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-" inoremap <expr> <CR>    pumvisible() ? "\<C-y>" : "\<CR>"
+nnoremap <silent> <Leader>h <cmd>lua vim.lsp.buf.inlay_hint(0)<CR>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -434,10 +272,6 @@ let g:rainbow_conf = {
 \}
 
 
-
-
-
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Filetype-specific settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -456,6 +290,10 @@ let g:html_indent_autotags="html,head,body"
 autocmd FileType gitcommit setlocal textwidth=72
 autocmd FileType gitcommit setlocal colorcolumn=73
 
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Semantic Highlighting
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 hi! link Black Normal
 hi! link Gray Comment
 hi! link Cyan Constant
@@ -467,69 +305,138 @@ hi! link Red Special
 hi! link Violet Underlined
 hi! link Magenta helpNote
 
-hi! link LspNamespace          Cyan
-hi! link LspType               Red
-hi! link LspClass              Red
-hi! link LspEnum               Yellow
-hi! link LspInterface          Red
-hi! link LspStruct             Green
-hi! link LspTypeParameter      Red
-hi! link LspParameter          Yellow
-hi! link LspVariable           Black
-hi! link LspProperty           Yellow
-hi! link LspEnumMember         Orange
-hi! link LspEvent              Violet
-hi! link LspFunction           Blue
-hi! link LspMethod             Violet
-hi! link LspMacro              Orange
-hi! link LspKeyword            Green
-hi! link LspModifier           Yellow
-hi! link LspComment            Gray
-hi! link LspString             Green
-hi! link LspNumber             Yellow
-hi! link LspRegexp             Green
-hi! link LspOperator           Violet
-
-" hi! link CppFunction           Blue
-" hi! link CppMethod             Violet
-" hi! link CppStaticMethod       Magenta
-" hi! link CppPreprocessor       Orange
-" hi! link CppNamespace          Cyan
-" hi! link CppOtherDependent     Black
-" hi! link CppClass              Red
-" hi! link CppTypeDependent      Gray
-" hi! link CppEnum               Yellow
-" hi! link CppTemplate           Green
-" hi! link CppTypedef            Red
-" hi! link CppDisabled           Gray
-" hi! link CppPrimitiveType      Magenta
-" hi! link CppOtherVariable      Orange
-" hi! link CppEnumMember         Orange
-" hi! link CppFieldVariable      Cyan
-" hi! link CppFieldStaticVariable Orange
-" hi! link CppLocalVariable      Black
-" hi! link CppParameter          Yellow
-
-" hi! link cStorageClass         Green
-" hi! link cType                 Magenta
-" hi! link cppStructure          Green
+hi! link @lsp.type.namespace          Cyan
+hi! link @lsp.type.type               Red
+hi! link @lsp.type.class              Red
+hi! link @lsp.type.enum               Yellow
+hi! link @lsp.type.interface          Red
+hi! link @lsp.type.struct             Green
+hi! link @lsp.type.typeParameter      Red
+hi! link @lsp.type.parameter          Yellow
+hi! link @lsp.type.variable           Black
+hi! link @lsp.type.property           Yellow
+hi! link @lsp.type.enumMember         Orange
+hi! link @lsp.type.event              Violet
+hi! link @lsp.type.function           Blue
+hi! link @lsp.type.method             Violet
+hi! link @lsp.type.macro              Orange
+hi! link @lsp.type.keyword            Green
+hi! link @lsp.type.modifier           Yellow
+hi! link @lsp.type.comment            Gray
+hi! link @lsp.type.string             Green
+hi! link @lsp.type.number             Yellow
+hi! link @lsp.type.regexp             Green
+hi! link @lsp.type.operator           Violet
+hi! link @lsp.type.decorator          Violet
 
 lua <<EOF
-local my_on_attach = function(client, bufnr)
-    local caps = client.server_capabilities
-    if caps.semanticTokensProvider and caps.semanticTokensProvider.full then
-      local augroup = vim.api.nvim_create_augroup("SemanticTokens", {})
-      vim.api.nvim_create_autocmd("TextChanged", {
-        group = augroup,
-        buffer = bufnr,
-        callback = function()
-          vim.lsp.buf.semantic_tokens_full()
-        end,
-      })
-      -- fire it first time on load as well
-      vim.lsp.buf.semantic_tokens_full()
-    end
+-- Helper function for nvim-cmp / vim-vsnip
+local has_words_before = function()
+  unpack = unpack or table.unpack
+  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 end
+
+-- Helper function for nvim-cmp / vim-vsnip
+local feedkey = function(key, mode)
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
+end
+
+-- Set up nvim-cmp.
+local cmp = require'cmp'
+
+cmp.setup({
+  snippet = {
+    -- REQUIRED - you must specify a snippet engine
+    expand = function(args)
+      vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+      -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+      -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
+      -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+    end,
+  },
+  window = {
+    -- completion = cmp.config.window.bordered(),
+    -- documentation = cmp.config.window.bordered(),
+  },
+  mapping = {
+    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.abort(),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+    ['<C-j>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+    ["<Tab>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif vim.fn["vsnip#available"](1) == 1 then
+        feedkey("<Plug>(vsnip-expand-or-jump)", "")
+      elseif has_words_before() then
+        cmp.complete()
+      else
+        fallback() -- The fallback function sends a already mapped key. In this case, it's probably `<Tab>`.
+      end
+    end, { "i", "s" }),
+    ["<S-Tab>"] = cmp.mapping(function()
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif vim.fn["vsnip#jumpable"](-1) == 1 then
+        feedkey("<Plug>(vsnip-jump-prev)", "")
+      end
+    end, { "i", "s" }),
+  },
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp' },
+    { name = 'vsnip' }, -- For vsnip users.
+    -- { name = 'luasnip' }, -- For luasnip users.
+    -- { name = 'ultisnips' }, -- For ultisnips users.
+    -- { name = 'snippy' }, -- For snippy users.
+  }, {
+    { name = 'buffer' },
+  }),
+  sorting = {
+    comparators = {
+      cmp.config.compare.offset,
+      cmp.config.compare.exact,
+      cmp.config.compare.recently_used,
+      require("clangd_extensions.cmp_scores"),
+      cmp.config.compare.kind,
+      cmp.config.compare.sort_text,
+      cmp.config.compare.length,
+      cmp.config.compare.order,
+    },
+  }
+})
+
+-- Set configuration for specific filetype.
+-- cmp.setup.filetype('gitcommit', {
+--   sources = cmp.config.sources({
+--     { name = 'git' }, -- You can specify the `git` source if [you were installed it](https://github.com/petertriho/cmp-git).
+--   }, {
+--     { name = 'buffer' },
+--   })
+-- })
+
+-- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline({ '/', '?' }, {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = {
+    { name = 'buffer' }
+  }
+})
+
+-- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline(':', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = cmp.config.sources({
+    { name = 'path' }
+  }, {
+    { name = 'cmdline' }
+  })
+})
+
+-- Set up lspconfig.
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 -- require'lspconfig'.rls.setup{}
 require'lspconfig'.rust_analyzer.setup{}
@@ -538,97 +445,24 @@ require'rust-tools'.setup{
     on_attach = my_on_attach
   }
 }
--- require'lspconfig'.clangd.setup{
---   cmd = { "clangd-14" };
--- }
-require'clangd_extensions'.setup{
-  server = {
-    cmd = { "clangd-14" },
-    on_attach = my_on_attach
-  }
+require'lspconfig'.clangd.setup{
+  cmd = { "clangd", "--completion-style=detailed" },
+  capabilities = capabilities
 }
+-- require'clangd_extensions'.setup{
+--   server = {
+--     cmd = { "clangd" },
+--     on_attach = my_on_attach
+--   },
+--   capabilities = capabilities
+-- }
 require'lspconfig'.hls.setup{}
 
-vim.o.completeopt = "menuone,noselect"
-
-require'compe'.setup {
-  enabled = true;
-  autocomplete = true;
-  debug = false;
-  min_length = 1;
-  preselect = 'enable';
-  throttle_time = 80;
-  source_timeout = 200;
-  incomplete_delay = 400;
-  max_abbr_width = 100;
-  max_kind_width = 100;
-  max_menu_width = 100;
-  documentation = false;
-
-  source = {
-    path = true;
-    buffer = true;
-    calc = true;
-    vsnip = true;
-    nvim_lsp = true;
-    nvim_lua = true;
-    spell = true;
-    tags = true;
-    snippets_nvim = true;
-    treesitter = true;
-  };
-}
-local t = function(str)
-  return vim.api.nvim_replace_termcodes(str, true, true, true)
-end
-
-local check_back_space = function()
-    local col = vim.fn.col('.') - 1
-    if col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
-        return true
-    else
-        return false
-    end
-end
-
--- Use (s-)tab to:
---- move to prev/next item in completion menuone
---- jump to prev/next snippet's placeholder
-_G.tab_complete = function()
-  if vim.fn.pumvisible() == 1 then
-    return t "<C-n>"
---  elseif vim.fn.call("vsnip#available", {1}) == 1 then
---    return t "<Plug>(vsnip-expand-or-jump)"
-  elseif check_back_space() then
-    return t "<Tab>"
-  else
-    return vim.fn['compe#complete']()
+-- Enable inlay hints when language server is attached
+vim.api.nvim_create_autocmd({"LspAttach"}, {
+  callback = function()
+    vim.lsp.buf.inlay_hint(0, true)
   end
-end
-_G.s_tab_complete = function()
-  if vim.fn.pumvisible() == 1 then
-    return t "<C-p>"
-  elseif vim.fn.call("vsnip#jumpable", {-1}) == 1 then
-    return t "<Plug>(vsnip-jump-prev)"
-  else
-    -- If <S-Tab> is not working in your terminal, change it to <C-h>
-    return t "<S-Tab>"
-  end
-end
-
-vim.api.nvim_set_keymap("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
-vim.api.nvim_set_keymap("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
-vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
-vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
-
-require("nvim-semantic-tokens").setup {
-  preset = "default",
-  -- highlighters is a list of modules following the interface of nvim-semantic-tokens.table-highlighter or 
-  -- function with the signature: highlight_token(ctx, token, highlight) where 
-  --        ctx (as defined in :h lsp-handler)
-  --        token  (as defined in :h vim.lsp.semantic_tokens.on_full())
-  --        highlight (a helper function that you can call (also multiple times) with the determined highlight group(s) as the only parameter)
-  highlighters = { require 'nvim-semantic-tokens.table-highlighter'}
-}
+})
 
 EOF
