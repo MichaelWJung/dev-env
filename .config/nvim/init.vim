@@ -251,6 +251,9 @@ nnoremap <silent> <C-n> <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
 
 nnoremap <silent> <Leader>h <cmd>lua vim.lsp.buf.inlay_hint(0)<CR>
 
+lua vim.keymap.set('v', '<Leader>a', vim.lsp.buf.code_action, {remap = false})
+lua vim.keymap.set('v', '<Leader>f', vim.lsp.buf.format, {remap = false})
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-fireplace
