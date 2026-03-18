@@ -6,6 +6,10 @@ require("plugins")
 require("config.options")
 require("config.autocmds")
 require("config.keymaps")
-
--- Load old vimscript config
-vim.cmd("source " .. vim.fn.stdpath("config") .. "/init-old.vim")
+require("config.highlights")
+require("config.cmp")
+require("config.lsp")
+require("config.plugin-settings.airline")
+require("config.plugin-settings.closetag")
+require("config.plugin-settings.fzf")
+require("config.plugin-settings.rainbow")

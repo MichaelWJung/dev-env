@@ -71,3 +71,11 @@ vim.g.load_doxygen_syntax = 1    -- Doxygen syntax highlighting by default
 
 -- Tags search path
 vim.opt.tags:append("./tags;$HOME")   -- Look for a tags file from the current directory upto $HOME.
+
+-- netrw
+vim.g.netrw_banner = 0
+vim.g.netrw_liststyle = 0
+
+-- HTML indentation tweaks
+vim.g.html_indent_inctags   = "p"
+vim.g.html_indent_autotags  = "html,head,body"
