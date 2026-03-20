@@ -53,7 +53,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
     -- Inlay hints toggle (per buffer)
     map("n", "<leader>h", function()
-      vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+      vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({bufnr = 0}), {bufnr = 0})
     end, vim.tbl_extend("force", opts, { desc = "Toggle inlay hints" }))
   end,
   desc = "Set LSP keymaps on attach",
