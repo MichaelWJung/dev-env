@@ -15,9 +15,13 @@ local plugins = {
   { "hrsh7th/vim-vsnip-integ" },
 
   -- LSP & related
-  { "neovim/nvim-lspconfig" },
+  -- { "neovim/nvim-lspconfig" },
   { "p00f/clangd_extensions.nvim" },
-  { "simrat39/rust-tools.nvim" },  -- note: somewhat legacy now; consider switching to rustaceanvim later
+  {
+    'mrcjkb/rustaceanvim',
+    version = '^8', -- Recommended
+    lazy = false, -- This plugin is already lazy
+  },
 
   -- Completion
   { "hrsh7th/cmp-nvim-lsp" },
