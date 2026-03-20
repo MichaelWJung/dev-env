@@ -64,7 +64,6 @@ vim.opt.wrap        = false
 
 -- Colorscheme (needs to come after termguicolors)
 vim.opt.background = "light"
-vim.cmd("colorscheme NeoSolarized")
 
 -- Doxygen syntax (global variable)
 vim.g.load_doxygen_syntax = 1    -- Doxygen syntax highlighting by default
