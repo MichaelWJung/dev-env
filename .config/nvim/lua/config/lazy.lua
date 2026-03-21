@@ -79,6 +79,17 @@ local plugins = {
 
   -- Quickly switch between header and source files
   -- { "vim-scripts/a.vim" },
+
+  -- AI integration
+  {
+    "olimorris/codecompanion.nvim",
+    version = "^19.0.0",
+    opts = {},
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+    },
+  },
 }
 
 -- Setup lazy.nvim
