@@ -90,6 +90,17 @@ local plugins = {
       "nvim-treesitter/nvim-treesitter",
     },
   },
+  {
+    'milanglacier/minuet-ai.nvim',
+    config = function()
+      require('minuet').setup {
+        -- Your configuration options here
+      }
+    end,
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+  },
 }
 
 -- Setup lazy.nvim
